@@ -15,7 +15,8 @@ namespace TarefasBackEnd.Controllers
         [AllowAnonymous]
         public IActionResult Get([FromServices] ITarefaRepository repository)
         {
-            var tarefas = repository.Read();
+            var usuarioId = new Guid(User.Identity.Name);//recuperando o usuário autenticado
+            var tarefas = repository.Read(usuarioId);
             return Ok(tarefas);
         }
 
@@ -24,6 +25,7 @@ namespace TarefasBackEnd.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest();
+            model.UsuarioId = new Guid(User.Identity.Name);//recuperando o usuário autenticado
             repository.Create(model);
             return Ok("Cadastro Realizado com sucesso");
         }

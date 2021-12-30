@@ -44,10 +44,10 @@ namespace TarefasBackEnd.Repositories
         /// <summary>
         /// Método responsável por retornar todas as tarefas
         /// </summary>
-        public List<Tarefa> Read()
+        public List<Tarefa> Read(Guid id)
         {
             //apenas retorna todos os dados usando  a expressao linq
-            return context.Tarefas.ToList();
+            return context.Tarefas.Where(x=>x.UsuarioId==id).ToList();
         }
         /// <summary>
         /// Método responsável por realizar a alteração dos dados
