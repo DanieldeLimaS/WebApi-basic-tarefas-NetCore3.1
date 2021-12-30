@@ -25,7 +25,6 @@ namespace TarefasBackEnd.Repositories
         {
             return context.Usuarios
                  .Where(x => x.Email == email && x.Senha == senha)
-                 .AsNoTracking()
                  .Select(x => new Usuario
                  {
                      Id = x.Id,

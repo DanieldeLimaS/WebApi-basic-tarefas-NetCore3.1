@@ -56,12 +56,13 @@ namespace TarefasBackEnd.Repositories
         /// <param name="tarefa"> Objeto Tarefa</param>
         public void Update(Guid id,Tarefa tarefa)
         {
-            var _tarefa = context.Tarefas.Find(id);
+            Tarefa _tarefa = new Tarefa();
+             _tarefa = context.Tarefas.Find(id);
             _tarefa.Nome = tarefa.Nome;
             _tarefa.Concluida = tarefa.Concluida;
 
             //modifica o estado para modified e salva as alterações
-            context.Entry(tarefa).State = EntityState.Modified;
+            context.Entry(_tarefa).State = EntityState.Modified;
             context.SaveChanges();
         }
     }

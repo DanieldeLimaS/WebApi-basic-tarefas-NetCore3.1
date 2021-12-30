@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using TarefasBackEnd.Models;
 using TarefasBackEnd.Repositories;
 
 namespace TarefasBackEnd.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("tarefa")]
     public class TarefaController : ControllerBase
     {
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get([FromServices] ITarefaRepository repository)
         {
             var tarefas = repository.Read();
@@ -29,7 +32,7 @@ namespace TarefasBackEnd.Controllers
         public IActionResult Update(string id, [FromBody] Tarefa model, [FromServices] ITarefaRepository repository)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest("Erro ao atualizar");
 
             model.Id = new Guid(id);
             repository.Update(model.Id,model);
