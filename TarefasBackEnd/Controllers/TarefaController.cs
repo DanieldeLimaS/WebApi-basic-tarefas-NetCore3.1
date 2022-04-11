@@ -11,13 +11,26 @@ namespace TarefasBackEnd.Controllers
     [Route("tarefa")]
     public class TarefaController : ControllerBase
     {
+       
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Get([FromServices] ITarefaRepository repository)
         {
-            var usuarioId = new Guid(User.Identity.Name);//recuperando o usuário autenticado
+            Guid usuarioId = new Guid(User.Identity.Name);//recuperando o usuário autenticado
+           
             var tarefas = repository.Read(usuarioId);
             return Ok(tarefas);
+        }
+        [HttpGet("GetListaTarefas")]
+        [AllowAnonymous]
+        public IActionResult GetListaTarefas( [FromServices] ITarefaRepository repository ,string nomeTarefa)
+        {
+            if(string.IsNullOrEmpty(nomeTarefa))
+                return BadRequest("Informe o nome da tarefa a ser pesquisara!");
+            var listaTarefa = repository.GetListaTarefa(nomeTarefa);
+            if (listaTarefa.Count == 0)
+                return NoContent();
+            return Ok(listaTarefa);
         }
 
         [HttpPost]

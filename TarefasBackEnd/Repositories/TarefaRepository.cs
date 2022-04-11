@@ -41,6 +41,14 @@ namespace TarefasBackEnd.Repositories
             context.Entry(tarefa).State = EntityState.Deleted;//muda o estado da tarefa para deletado
             context.SaveChanges();//salva as alterações
         }
+
+        public List<Tarefa> GetListaTarefa(string nomeTarefa)
+        {
+            var lista = new List<Tarefa>();
+            lista = context.Tarefas.Where(x => x.Nome.Contains(nomeTarefa)).ToList();
+            return lista;
+        }
+
         /// <summary>
         /// Método responsável por retornar todas as tarefas
         /// </summary>
