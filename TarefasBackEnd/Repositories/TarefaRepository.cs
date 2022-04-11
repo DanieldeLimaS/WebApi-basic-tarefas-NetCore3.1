@@ -45,8 +45,9 @@ namespace TarefasBackEnd.Repositories
         public List<Tarefa> GetListaTarefa(string nomeTarefa)
         {
             var lista = new List<Tarefa>();
-            lista = context.Tarefas.Where(x => x.Nome.Contains(nomeTarefa)).ToList();
-            return lista;
+            if (string.IsNullOrEmpty(nomeTarefa))
+                return context.Tarefas.ToList();
+            return context.Tarefas.Where(x => x.Nome.Contains(nomeTarefa)).ToList();
         }
 
         /// <summary>

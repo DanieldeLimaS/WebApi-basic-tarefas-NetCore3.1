@@ -16,10 +16,18 @@ namespace TarefasBackEnd.Controllers
         [AllowAnonymous]
         public IActionResult Get([FromServices] ITarefaRepository repository)
         {
-            Guid usuarioId = new Guid(User.Identity.Name);//recuperando o usuário autenticado
-           
-            var tarefas = repository.Read(usuarioId);
-            return Ok(tarefas);
+            try
+            {
+                Guid usuarioId = new Guid(User.Identity.Name);//recuperando o usuário autenticado
+
+                var tarefas = repository.Read(usuarioId);
+                return Ok(tarefas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+          
         }
         [HttpGet("GetListaTarefas")]
         [AllowAnonymous]
