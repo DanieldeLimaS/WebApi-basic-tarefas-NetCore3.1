@@ -33,8 +33,6 @@ namespace TarefasBackEnd.Controllers
         [AllowAnonymous]
         public IActionResult GetListaTarefas( [FromServices] ITarefaRepository repository ,string nomeTarefa)
         {
-            if(string.IsNullOrEmpty(nomeTarefa))
-                return BadRequest("Informe o nome da tarefa a ser pesquisara!");
             var listaTarefa = repository.GetListaTarefa(nomeTarefa);
             if (listaTarefa.Count == 0)
                 return NoContent();
