@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace TarefasBackEnd.Controllers
     public class UsuarioController : ControllerBase
     {
         [HttpPost]
-        [Route("")]
+        [Route("cadastrar")]
+        //[ProducesResponseType(typeof(IEnumerable<TokenResp>), StatusCodes.Status200OK)]
         public IActionResult Create([FromBody] Usuario model, [FromServices] IUsuarioRepository repository)
         {
             if (!ModelState.IsValid) return BadRequest();
