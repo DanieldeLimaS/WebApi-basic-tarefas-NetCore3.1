@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TarefasBackEnd.Models;
+using TarefasBackEnd.Models.ViewModels;
 
 namespace TarefasBackEnd.Repositories
 {
@@ -14,9 +15,15 @@ namespace TarefasBackEnd.Repositories
         {
             this.context = context;
         }
-        public void Create(Usuario usuario)
+        public void Create(UsuarioCadastroViewModel usuarioViewmodel)
         {
-            usuario.Id = Guid.NewGuid();
+            Usuario usuario = new Usuario()
+            {
+                Id = Guid.NewGuid(),
+                Email = usuarioViewmodel.Email,
+                Nome = usuarioViewmodel.Nome,
+                Senha = usuarioViewmodel.Senha,
+            };
             context.Add(usuario);
             context.SaveChanges();
         }

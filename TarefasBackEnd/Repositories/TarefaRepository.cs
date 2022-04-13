@@ -4,6 +4,7 @@ using TarefasBackEnd.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using TarefasBackEnd.Models.ViewModels;
 
 namespace TarefasBackEnd.Repositories
 {
@@ -22,9 +23,16 @@ namespace TarefasBackEnd.Repositories
         /// Método responsável pela criação da tarefa
         /// </summary>
         /// <param name="tarefa"> objeto tarefa</param>
-        public void Create(Tarefa tarefa)
+        public void Create(TarefaCadastroViewModel tarefaViewModel,Guid UsuarioId)
         {
-            tarefa.Id = Guid.NewGuid();
+            Tarefa tarefa = new Tarefa()
+            {
+                Id = Guid.NewGuid(),
+                UsuarioId = UsuarioId,
+                Concluida = false,
+                Nome = tarefaViewModel.Nome,
+            };
+
             context.Add(tarefa);//Adiciona o objeto tarefa no contexto
             context.SaveChanges();//salva as alterações
         }

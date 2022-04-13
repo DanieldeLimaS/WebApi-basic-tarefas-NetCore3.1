@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TarefasBackEnd.Models;
+using TarefasBackEnd.Models.ViewModels;
 
 namespace TarefasBackEnd.Repositories{
    
@@ -8,7 +9,7 @@ namespace TarefasBackEnd.Repositories{
     {
         List<Tarefa> Read(Guid id);
         List<Tarefa> GetListaTarefa(string nomeTarefa);
-        void Create(Tarefa tarefa);
+        void Create(TarefaCadastroViewModel tarefaViewModel,Guid UsuarioId);
         void Delete(Guid Id);
         void Update(Guid id,Tarefa tarefa);
     }

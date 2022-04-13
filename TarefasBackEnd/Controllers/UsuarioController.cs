@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using TarefasBackEnd.Models;
+using TarefasBackEnd.Models.ViewModels;
 using TarefasBackEnd.Repositories;
 using TarefasBackEnd.ViewModels;
 
@@ -21,7 +22,7 @@ namespace TarefasBackEnd.Controllers
         [HttpPost]
         [Route("cadastrar")]
         //[ProducesResponseType(typeof(IEnumerable<TokenResp>), StatusCodes.Status200OK)]
-        public IActionResult Create([FromBody] Usuario model, [FromServices] IUsuarioRepository repository)
+        public IActionResult Create([FromBody] UsuarioCadastroViewModel model, [FromServices] IUsuarioRepository repository)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -39,7 +40,6 @@ namespace TarefasBackEnd.Controllers
                 return Unauthorized();
             return Ok(new
             {
-                usuario = usuario,
                 token = GenerateToken(usuario)
             });
 
@@ -51,14 +51,15 @@ namespace TarefasBackEnd.Controllers
 
             //chave que usa para fazer a criptografia das informações
 
-            var key = Encoding.ASCII.GetBytes("IssoÉUmTokenGrandeParaTestarAChaveUnica_ÉRecomendadoSalvarOTokenEmUmArquivoExternoOuArquivoDeConfiguracao");
+            var key = Encoding.ASCII.GetBytes(SecretCompartilhada.Secret);
             var descriptor = new SecurityTokenDescriptor
             {
                 //informações do usuário
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     //informações que quero armazenar para o usuário
-                    new Claim(ClaimTypes.Name,usuario.Id.ToString())
+                    new Claim(ClaimTypes.Name,usuario.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier,usuario.Nome.ToString())
                 }),
                 //Tempo que o Token vai ser valido, e após esse tempo tem que ser gerado um novo
                 Expires = DateTime.UtcNow.AddSeconds(30),
@@ -69,7 +70,7 @@ namespace TarefasBackEnd.Controllers
             };
             //Criando o token com base no descriptor
             var token = tokenHandler.CreateToken(descriptor);
-            return tokenHandler.WriteToken(token); //convert o meu Token para uma string
+            return "Bearer "+tokenHandler.WriteToken(token); //convert o meu Token para uma string
         }
     }
 }

@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using TarefasBackEnd.Models;
+using TarefasBackEnd.Models.ViewModels;
 using TarefasBackEnd.Repositories;
 
 namespace TarefasBackEnd.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("tarefa")]
+    [Route("api/v1/tarefa/")]
     public class TarefaController : ControllerBase
     {
        /// <summary>
@@ -46,12 +47,11 @@ namespace TarefasBackEnd.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Tarefa model, [FromServices] ITarefaRepository repository)
+        public IActionResult Create([FromBody] TarefaCadastroViewModel tarefaViewModel, [FromServices] ITarefaRepository repository)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            model.UsuarioId = new Guid(User.Identity.Name);//recuperando o usuário autenticado
-            repository.Create(model);
+            repository.Create(tarefaViewModel, new Guid(User.Identity.Name));
             return Ok("Cadastro Realizado com sucesso");
         }
 
