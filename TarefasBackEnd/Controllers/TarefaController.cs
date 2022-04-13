@@ -9,7 +9,7 @@ namespace TarefasBackEnd.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/v1/tarefa/")]
+    [Route("tarefa")]
     public class TarefaController : ControllerBase
     {
        /// <summary>
