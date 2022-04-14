@@ -12,11 +12,12 @@ namespace TarefasBackEnd.Controllers
     [Route("tarefa")]
     public class TarefaController : ControllerBase
     {
-       /// <summary>
-       /// Retorna usuário autenticado
-       /// </summary>
+        /// <summary>
+        /// Retorna a lista de tarefas do usuário autenticado
+        /// </summary>
         [HttpGet]
         [AllowAnonymous]
+        [Route("Get")]
         public IActionResult Get([FromServices] ITarefaRepository repository)
         {
             try
@@ -33,19 +34,29 @@ namespace TarefasBackEnd.Controllers
             {
                 return BadRequest(ex.Message);
             }
-          
+
         }
+
+        /// <summary>
+        /// Realiza consulta de acordo com o nome da tarefa passado e retorna uma lista de tarefas
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="nomeTarefa">Retorna a lista com o nome da tarefa</param>
+        /// <returns></returns>
         [Route("GetListaTarefas")]
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult GetListaTarefas( [FromServices] ITarefaRepository repository ,string nomeTarefa)
+        public IActionResult GetListaTarefas([FromServices] ITarefaRepository repository, string nomeTarefa)
         {
             var listaTarefa = repository.GetListaTarefa(nomeTarefa);
             if (listaTarefa.Count == 0)
                 return NoContent();
             return Ok(listaTarefa);
         }
-
+        /// <summary>
+        /// Realiza o cadastro da tarefa no banco de dados
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create([FromBody] TarefaCadastroViewModel tarefaViewModel, [FromServices] ITarefaRepository repository)
         {
@@ -54,7 +65,10 @@ namespace TarefasBackEnd.Controllers
             repository.Create(tarefaViewModel, new Guid(User.Identity.Name));
             return Ok("Cadastro Realizado com sucesso");
         }
-
+        /// <summary>
+        /// Realiza a alteração dos dados da tarefa no banco de dados
+        /// </summary>
+        /// <returns></returns>
         [HttpPut]
         public IActionResult Update(string id, [FromBody] Tarefa model, [FromServices] ITarefaRepository repository)
         {
@@ -62,14 +76,18 @@ namespace TarefasBackEnd.Controllers
                 return BadRequest("Erro ao atualizar");
 
             model.Id = new Guid(id);
-            repository.Update(model.Id,model);
+            repository.Update(model.Id, model);
             return Ok("Atualizado com sucesso.");
         }
-
+        /// <summary>
+        /// Deleta a tarefa
+        /// </summary>
+        /// <param name="id"> Id da tarefa</param>
+        /// <returns></returns>
         [HttpDelete]
         public IActionResult Delete(Guid id, [FromServices] ITarefaRepository repository)
         {
-            if (id== null)
+            if (id == null)
                 return BadRequest();
 
             repository.Delete(id);

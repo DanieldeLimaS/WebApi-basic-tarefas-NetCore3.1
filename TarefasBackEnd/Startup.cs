@@ -66,12 +66,14 @@ namespace TarefasBackEnd
             var key = Encoding.ASCII.GetBytes(SecretCompartilhada.Secret);
 
             //o meu serviço de autorização serão baseados em JSON
-            services.AddAuthentication(options => {
+            services.AddAuthentication(options =>
+            {
                 //definindo o JWT como o scheme de autenticacao do sistema
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(options => {
+                .AddJwtBearer(options =>
+                {
                     options.RequireHttpsMetadata = false;//não estou obrigando a usar o https
                     options.SaveToken = true;//permite salvar o token
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -111,11 +113,11 @@ namespace TarefasBackEnd
             });
 
             app.UseSwagger();
-            
+
 
             app.UseSwaggerUI(c =>
             {
-               
+
                 c.RoutePrefix = String.Empty;
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             });
