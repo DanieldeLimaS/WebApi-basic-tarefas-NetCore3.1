@@ -17,7 +17,7 @@ namespace TarefasBackEnd.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        [Route("Get")]
+        [Route("GetListaTarefasDoUsuarioLogado")]
         public IActionResult Get([FromServices] ITarefaRepository repository)
         {
             try
@@ -43,7 +43,7 @@ namespace TarefasBackEnd.Controllers
         /// <param name="repository"></param>
         /// <param name="nomeTarefa">Retorna a lista com o nome da tarefa</param>
         /// <returns></returns>
-        [Route("GetListaTarefas")]
+        [Route("GetListaTarefasPorNome")]
         [HttpGet]
         [AllowAnonymous]
         public IActionResult GetListaTarefas([FromServices] ITarefaRepository repository, string nomeTarefa)
@@ -58,6 +58,7 @@ namespace TarefasBackEnd.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [Route("InserirNovaTarefa")]
         public IActionResult Create([FromBody] TarefaCadastroViewModel tarefaViewModel, [FromServices] ITarefaRepository repository)
         {
             if (!ModelState.IsValid)
@@ -70,6 +71,7 @@ namespace TarefasBackEnd.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut]
+        [Route("AtualizarTarefa")]
         public IActionResult Update(string id, [FromBody] Tarefa model, [FromServices] ITarefaRepository repository)
         {
             if (!ModelState.IsValid)
@@ -85,6 +87,7 @@ namespace TarefasBackEnd.Controllers
         /// <param name="id"> Id da tarefa</param>
         /// <returns></returns>
         [HttpDelete]
+        [Route("DeletarTarefaPorId")]
         public IActionResult Delete(Guid id, [FromServices] ITarefaRepository repository)
         {
             if (id == null)
